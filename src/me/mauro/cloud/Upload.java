@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class Upload implements Comando {
 
-    private final static int MAXIMUM_PAYLOAD_SIZE = 30000;
+    private final static int MAXIMUM_PAYLOAD_SIZE = 186000;
 
     @Override
     public void action(Pacote pacote) {
         try {
             for (Pacote pkt : fragmentarPacote(pacote)) {
-                System.out.println("tomei");
+                System.out.println("tomei: " + pkt.getFileBytes().length);
                 Socket socket = new Socket(Client.IP, Client.PORT);
                 OutputStream os = socket.getOutputStream();
 
