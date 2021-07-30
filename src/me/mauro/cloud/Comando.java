@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.mauro.cloud.client;
+package me.mauro.cloud;
 
 /**
  *
  * @author user
  */
-public class Client {
-    
-    public static final String IP = "localhost";
-    public static final int PORT = 53152;
-    
+public interface Comando {
+    public void action(Pacote pacote);
 }

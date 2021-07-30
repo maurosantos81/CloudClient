@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.mauro.cloud.client;
+package me.mauro.cloud;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,12 +19,13 @@ import java.util.List;
  */
 public class Upload implements Comando {
 
-    private final static int MAXIMUM_PAYLOAD_SIZE = 20000;
+    private final static int MAXIMUM_PAYLOAD_SIZE = 30000;
 
     @Override
     public void action(Pacote pacote) {
         try {
             for (Pacote pkt : fragmentarPacote(pacote)) {
+                System.out.println("tomei");
                 Socket socket = new Socket(Client.IP, Client.PORT);
                 OutputStream os = socket.getOutputStream();
 
@@ -55,6 +56,10 @@ public class Upload implements Comando {
                         fragmentOffset + MAXIMUM_PAYLOAD_SIZE < fileSize));
                 fragmentOffset += MAXIMUM_PAYLOAD_SIZE;
             }
+        }
+        
+        if (result.isEmpty()){
+            result.add(pacote);
         }
         
         return result;

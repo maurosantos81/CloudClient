@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.mauro.cloud.client;
+package me.mauro.cloud;
 
 import java.io.Serializable;
 
@@ -13,8 +13,9 @@ import java.io.Serializable;
  */
 public class Pacote implements Serializable {
     
-    private final static int UPLOAD = 0;
-    private final static int DOWNLOAD = 1;
+    private static final long serialVersionUID = 1L;
+    public final static int UPLOAD = 0;
+    public final static int DOWNLOAD = 1;
     
     private static int identifierNum = 0;
 
@@ -64,5 +65,4 @@ public class Pacote implements Serializable {
     public boolean haveMoreFragments(){
         return this.moreFragments;
     }
-
 }
