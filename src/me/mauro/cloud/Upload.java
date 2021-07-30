@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Upload implements Comando {
 
-    private final static int MAXIMUM_PAYLOAD_SIZE = 186000;
+    private final static int MAXIMUM_PAYLOAD_SIZE = 1000000;
 
     @Override
     public void action(Pacote pacote) {
