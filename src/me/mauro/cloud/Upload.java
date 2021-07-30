@@ -25,7 +25,6 @@ public class Upload implements Comando {
     public void action(Pacote pacote) {
         try {
             for (Pacote pkt : fragmentarPacote(pacote)) {
-                System.out.println("tomei: " + pkt.getFileBytes().length);
                 Socket socket = new Socket(Client.IP, Client.PORT);
                 OutputStream os = socket.getOutputStream();
 

@@ -29,7 +29,6 @@ public class Client {
             bos.write(buffer, 0, read);
         }
 
-        System.out.println(bos.toByteArray().length);
         Pacote pkt = new Pacote(0, 0, bos.toByteArray(), file.getName(), Pacote.UPLOAD, false);
         new Upload().action(pkt);
 
