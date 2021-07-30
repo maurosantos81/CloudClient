@@ -51,17 +51,21 @@ public class Upload implements Comando {
         byte[] newArray;
         if (pacote.getFileBytes().length > MAXIMUM_PAYLOAD_SIZE) {
             while (fragmentOffset < fileSize) {
-                newArray = Arrays.copyOfRange(pacote.getFileBytes(), fragmentOffset, fragmentOffset + MAXIMUM_PAYLOAD_SIZE);
-                result.add(new Pacote(fragmentOffset / MAXIMUM_PAYLOAD_SIZE, fragmentOffset, newArray, pacote.getName(), pacote.getComando(), 
+                //copia os bytes desde o fragment offset até à sua soma com o valor de payload maximo.
+                //caso essa soma seja maior que o total de bytes, copia apenas até ai.
+                newArray = Arrays.copyOfRange(pacote.getFileBytes(), fragmentOffset, Math.min(fragmentOffset + MAXIMUM_PAYLOAD_SIZE, fileSize));
+
+                result.add(new Pacote(fragmentOffset / MAXIMUM_PAYLOAD_SIZE, fragmentOffset, newArray, pacote.getName(), pacote.getComando(),
                         fragmentOffset + MAXIMUM_PAYLOAD_SIZE < fileSize));
                 fragmentOffset += MAXIMUM_PAYLOAD_SIZE;
             }
         }
-        
-        if (result.isEmpty()){
+
+        //se o pacote nao precisar de ser fragmentado
+        if (result.isEmpty()) {
             result.add(pacote);
         }
-        
+
         return result;
     }
 }
