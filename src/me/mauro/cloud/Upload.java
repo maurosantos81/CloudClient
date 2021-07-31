@@ -5,7 +5,6 @@
  */
 package me.mauro.cloud;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,30 +23,16 @@ import java.util.List;
  */
 public class Upload {
 
-    private final static int MAXIMUM_PAYLOAD_SIZE = 5000000;
+    private final static int MAXIMUM_PAYLOAD_SIZE = 2000000;
     private final static String PATH = "C:\\Program Files (x86)\\M4Cloud\\";
 
     public void action(File file) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(file);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[MAXIMUM_PAYLOAD_SIZE];
-        int read;
-        while ((read = fis.read(buffer)) != -1) {
-            bos.write(buffer, 0, read);
-        }
-
-        Pacote pkt = new Pacote(0, 0, bos.toByteArray(), file.getName(), Pacote.UPLOAD, false);
-
-        fis.close();
-        bos.close();
-
         try {
-            for (File file : fragmentarPacote(pacote)) {
+            for (File currentFile : fragmentarFile(file)) {
                 Socket socket = new Socket(Client.IP, Client.PORT);
 
-                Pacote pkt = readPacketFromFile(file);
-                file.delete();
+                Pacote pkt = readPacketFromFile(currentFile);
+                currentFile.delete();
 
                 OutputStream os = socket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -76,32 +60,22 @@ public class Upload {
         return pkt;
     }
 
-    private List<File> fragmentarPacote(Pacote pacote) throws FileNotFoundException, IOException {
+    private List<File> fragmentarFile(File file) throws FileNotFoundException, IOException {
         List<File> result = new LinkedList<>();
+        int identifier = Pacote.nextIdentifier();
+        int fragment = 0;
+        int offset = 0;
 
-        int fileSize = pacote.getFileBytes().length;
-        int fragmentOffset = 0;
-
-        byte[] newArray;
-        if (pacote.getFileBytes().length > MAXIMUM_PAYLOAD_SIZE) {
-            while (fragmentOffset < fileSize) {
-                //copia os bytes desde o fragment offset até à sua soma com o valor de payload maximo.
-                //caso essa soma seja maior que o total de bytes, copia apenas até ai.
-                newArray = Arrays.copyOfRange(pacote.getFileBytes(), fragmentOffset, Math.min(fragmentOffset + MAXIMUM_PAYLOAD_SIZE, fileSize));
-
-                fragmentOffset += MAXIMUM_PAYLOAD_SIZE;
-
-                File file = writeObject(new Pacote(fragmentOffset / MAXIMUM_PAYLOAD_SIZE, fragmentOffset, newArray, pacote.getName(), pacote.getComando(),
-                        fragmentOffset + MAXIMUM_PAYLOAD_SIZE < fileSize));
-                result.add(file);
-            }
+        FileInputStream fis = new FileInputStream(file);
+        byte[] buffer = new byte[MAXIMUM_PAYLOAD_SIZE];
+        //substituir o read() pelo read com o quanto vou ler
+        while (fis.read(buffer) != -1) {
+            Pacote pkt = new Pacote(fragment++, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, offset + MAXIMUM_PAYLOAD_SIZE < file.length());
+            offset += MAXIMUM_PAYLOAD_SIZE;
+            result.add(writeObject(pkt));
         }
 
-        //se o pacote nao precisar de ser fragmentado
-        if (result.isEmpty()) {
-            File file = writeObject(pacote);
-            result.add(file);
-        }
+        fis.close();
 
         return result;
     }

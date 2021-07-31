@@ -65,4 +65,8 @@ public class Pacote implements Serializable {
     public boolean haveMoreFragments(){
         return this.moreFragments;
     }
+    
+    public static int nextIdentifier(){
+        return identifierNum++;
+    }
 }
