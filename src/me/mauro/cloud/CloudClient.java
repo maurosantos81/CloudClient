@@ -20,7 +20,8 @@ public class CloudClient {
     public static void main(String[] args) throws IOException {
         Client client = new Client();
 //        client.upload(new File("C:\\Users\\M4UR0\\Desktop\\compras.txt"));
-        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
+        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\FanBoy ChumChum T01 ProMac.zip"));
+//        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
     }
 
 }

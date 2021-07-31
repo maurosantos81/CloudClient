@@ -20,20 +20,7 @@ public class Client {
     public static final int PORT = 53152;
 
     public void upload(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[4096];
-        int read;
-        while ((read = fis.read(buffer)) != -1) {
-            bos.write(buffer, 0, read);
-        }
-
-        Pacote pkt = new Pacote(0, 0, bos.toByteArray(), file.getName(), Pacote.UPLOAD, false);
-        new Upload().action(pkt);
-
-        fis.close();
-        bos.close();
+        new Upload().action(file);
     }
 
 }
