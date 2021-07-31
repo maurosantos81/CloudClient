@@ -22,8 +22,8 @@ public class CloudClient {
         Client client = new Client();
 //        client.upload(new File("C:\\Users\\M4UR0\\Desktop\\compras.txt"));
 //        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\FanBoy ChumChum T01 ProMac.zip"));
-        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
-        Desktop.getDesktop().open(new File("C:\\Program Files (x86)\\M4Cloud\\"));
+        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
+//        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
     }
 
 }
