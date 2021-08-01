@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,21 +25,18 @@ public class Upload {
     private final static int MAXIMUM_PAYLOAD_SIZE = 10000000;
     private final static String PATH = "C:\\Program Files (x86)\\M4Cloud\\";
 
-    public void action(File file) throws FileNotFoundException, IOException {
+    public void enviar(File file, User user) throws FileNotFoundException, IOException {
         try {
-            for (File currentFile : fragmentarFile(file)) {
+            for (File currentFile : fragmentarFile(file, user)) {
                 Socket socket = new Socket(Client.IP, Client.PORT);
 
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
                 Pacote pkt = readPacketFromFile(currentFile);
-                currentFile.delete();
-
-                OutputStream os = socket.getOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(os);
-
                 oos.writeObject(pkt);
 
+                currentFile.delete();
                 oos.close();
-                os.close();
                 socket.close();
             }
         } catch (IOException | ClassNotFoundException ex) {
@@ -60,7 +56,7 @@ public class Upload {
         return pkt;
     }
 
-    private List<File> fragmentarFile(File file) throws FileNotFoundException, IOException {
+    private List<File> fragmentarFile(File file, User user) throws FileNotFoundException, IOException {
         List<File> result = new LinkedList<>();
         int identifier = Pacote.nextIdentifier();
         int fragment = 0;
@@ -78,7 +74,7 @@ public class Upload {
             readlen = (int) ((fragment + 2) * MAXIMUM_PAYLOAD_SIZE > file.length() ? file.length() - fragment * MAXIMUM_PAYLOAD_SIZE - readlen : MAXIMUM_PAYLOAD_SIZE);
 
             //colocar num file o ficheiro (para enviar) fragmentado
-            Pacote pkt = new Pacote(identifier, fragment, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, readlen != 0);
+            Pacote pkt = new Pacote(identifier, fragment, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, readlen != 0, user);
             result.add(writeObject(pkt));
 
             offset += readlen;

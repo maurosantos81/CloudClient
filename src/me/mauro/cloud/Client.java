@@ -17,8 +17,24 @@ public class Client {
     public static final String IP = "localhost";
     public static final int PORT = 53152;
 
+    public static Client instance;
+    private final User user;
+
+    private Client(User user) {
+        this.user = user;
+    }
+
+    //Só o primeiro user é registado na instancia.
+    public static Client getInstance(User user) {
+        if (instance == null) {
+            instance = new Client(user);
+        }
+
+        return instance;
+    }
+
     public void upload(File file) throws IOException {
-        new Upload().action(file);
+        new Upload().enviar(file, this.user);
     }
 
 }

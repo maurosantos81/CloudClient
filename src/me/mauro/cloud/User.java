@@ -5,12 +5,16 @@
  */
 package me.mauro.cloud;
 
+import java.io.Serializable;
+
 /**
  *
  * @author user
  */
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private String nome;
     private String password;
 
