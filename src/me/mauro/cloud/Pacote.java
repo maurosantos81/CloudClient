@@ -12,11 +12,11 @@ import java.io.Serializable;
  * @author user
  */
 public class Pacote implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     public final static int UPLOAD = 0;
     public final static int DOWNLOAD = 1;
-    
+
     private static int identifierNum = 0;
 
     private final int identifier;
@@ -28,8 +28,8 @@ public class Pacote implements Serializable {
     private final String name;
     private final int comando;
 
-    public Pacote(int fragment, int fragmentOffset, byte[] fileBytes, String name, int comando, boolean moreFragments) {
-        this.identifier = identifierNum;
+    public Pacote(int identifier, int fragment, int fragmentOffset, byte[] fileBytes, String name, int comando, boolean moreFragments) {
+        this.identifier = identifier;
         this.fragment = fragment;
         this.fragmentOffset = fragmentOffset;
         this.moreFragments = moreFragments;
@@ -37,7 +37,7 @@ public class Pacote implements Serializable {
         this.name = name;
         this.comando = comando;
     }
-    
+
     public int getComando() {
         return comando;
     }
@@ -61,12 +61,12 @@ public class Pacote implements Serializable {
     public int getFragmentOffset() {
         return fragmentOffset;
     }
-    
-    public boolean haveMoreFragments(){
+
+    public boolean haveMoreFragments() {
         return this.moreFragments;
     }
-    
-    public static int nextIdentifier(){
+
+    public static int nextIdentifier() {
         return identifierNum++;
     }
 }

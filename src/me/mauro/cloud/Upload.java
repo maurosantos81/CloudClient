@@ -14,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,28 +67,21 @@ public class Upload {
         int offset = 0;
 
         FileInputStream fis = new FileInputStream(file);
-        byte[] buffer = new byte[MAXIMUM_PAYLOAD_SIZE];
-
-        int transferido = 0;
 
         int readlen = (int) Math.min(MAXIMUM_PAYLOAD_SIZE, file.length());
-        System.out.println(" " +Files.size(file.toPath())  );
-//        while (fis.read(buffer) != -1) {
-        while (fis.read(buffer, 0, readlen) != -1) {
-            Pacote pkt = new Pacote(fragment, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, offset + readlen < file.length());
-            offset += MAXIMUM_PAYLOAD_SIZE;
-            transferido += readlen;
+        byte[] buffer;
+        while (readlen != 0) {
+            buffer = new byte[readlen];
+            fis.read(buffer);
+
+            //se o nao houver espaço para mais um MAXIMUM_PAYLOAD_SIZE, utiliza-se a difrença do tamanho do ficheiro e o que ja foi analisado.
+            readlen = (int) ((fragment + 2) * MAXIMUM_PAYLOAD_SIZE > file.length() ? file.length() - fragment * MAXIMUM_PAYLOAD_SIZE - readlen : MAXIMUM_PAYLOAD_SIZE);
+
+            //colocar num file o ficheiro (para enviar) fragmentado
+            Pacote pkt = new Pacote(identifier, fragment, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, readlen != 0);
             result.add(writeObject(pkt));
 
-//            readlen = (int) ((fragment + 2) * MAXIMUM_PAYLOAD_SIZE > file.length() ? file.length() - (fragment + 1) * MAXIMUM_PAYLOAD_SIZE : MAXIMUM_PAYLOAD_SIZE);
-//            System.out.println("fragment " + fragment);
-//            System.out.println("offset " + (fragment + 1) * MAXIMUM_PAYLOAD_SIZE);
-//            System.out.println("transferido " + transferido);
-//            System.out.println("buffer " + buffer.length);
-//            System.out.println("jj " + (file.length() - (fragment) * MAXIMUM_PAYLOAD_SIZE));
-//            System.out.println("readlen " + readlen);
-//            System.out.println();
-
+            offset += readlen;
             fragment++;
         }
 
