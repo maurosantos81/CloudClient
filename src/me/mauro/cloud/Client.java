@@ -7,6 +7,7 @@ package me.mauro.cloud;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -35,6 +36,14 @@ public class Client {
 
     public void upload(File file) throws IOException {
         new Upload().enviar(file, this.user);
+    }
+
+    public List<String> getFilesList() throws IOException, ClassNotFoundException {
+        return new ListServerFiles().listar(this.user);
+    }
+
+    public void download(String nome) {
+        new Download().action(nome, this.user);
     }
 
 }
