@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author user
  */
-public class Upload {
+public class EnviarFicheiro1 {
 
     private final static int MAXIMUM_PAYLOAD_SIZE = 10000000;
     private final static String PATH = "C:\\Program Files (x86)\\M4Cloud\\";

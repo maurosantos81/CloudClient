@@ -35,15 +35,15 @@ public class Client {
     }
 
     public void upload(File file) throws IOException {
-        new Upload().enviar(file, this.user);
+        new EnviarFicheiro().enviar(file, this.user);
     }
 
     public List<String> getFilesList() throws IOException, ClassNotFoundException {
         return new ListServerFiles().listar(this.user);
     }
 
-    public void download(String nome) {
-        new Download().action(nome, this.user);
+    public void download(String nome) throws IOException, ClassNotFoundException {
+        new ReceberFicheiro().action(nome, this.user);
     }
 
 }

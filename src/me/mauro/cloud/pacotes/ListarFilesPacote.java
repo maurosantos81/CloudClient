@@ -27,6 +27,6 @@ public class ListarFilesPacote extends Pacote {
 
     @Override
     public int getComando() {
-        return Pacote.LISTAR_FILES;
+        return Pacote.LIST_FILES;
     }
 }

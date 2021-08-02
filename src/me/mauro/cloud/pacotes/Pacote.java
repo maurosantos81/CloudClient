@@ -18,7 +18,7 @@ public abstract class Pacote implements Serializable {
 
     public final static int UPLOAD = 0;
     public final static int DOWNLOAD = 1;
-    public final static int LISTAR_FILES = 2;
+    public final static int LIST_FILES = 2;
 
     private static int identifierNum = 1;
 

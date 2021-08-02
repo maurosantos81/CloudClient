@@ -21,8 +21,8 @@ public class CloudClient {
         Client client = Client.getInstance(new User("mauro", "mauro"));
 //        client.upload(new File("C:\\Users\\M4UR0\\Desktop\\compras.txt"));
 //        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\FanBoy ChumChum T01 ProMac.zip"));
-//        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
-        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
+        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
+//        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
         client.getFilesList().forEach(System.out::println);
     }
     
