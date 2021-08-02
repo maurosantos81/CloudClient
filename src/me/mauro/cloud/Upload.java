@@ -5,6 +5,8 @@
  */
 package me.mauro.cloud;
 
+import me.mauro.cloud.pacotes.UploadPacote;
+import me.mauro.cloud.pacotes.Pacote;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -74,7 +76,7 @@ public class Upload {
             readlen = (int) ((fragment + 2) * MAXIMUM_PAYLOAD_SIZE > file.length() ? file.length() - fragment * MAXIMUM_PAYLOAD_SIZE - readlen : MAXIMUM_PAYLOAD_SIZE);
 
             //colocar num file o ficheiro (para enviar) fragmentado
-            Pacote pkt = new Pacote(identifier, fragment, offset, buffer.clone(), file.getName(), Pacote.UPLOAD, readlen != 0, user);
+            UploadPacote pkt = new UploadPacote(identifier, fragment, offset, buffer.clone(), file.getName(), readlen != 0, user);
             result.add(writeObject(pkt));
 
             offset += readlen;
@@ -86,7 +88,7 @@ public class Upload {
         return result;
     }
 
-    private File writeObject(Pacote pacote) throws FileNotFoundException, IOException {
+    private File writeObject(UploadPacote pacote) throws FileNotFoundException, IOException {
         File file = File.createTempFile(PATH + pacote.getName() + pacote.getIdentifier() + "_" + pacote.getFragment(), ".tmp");
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
