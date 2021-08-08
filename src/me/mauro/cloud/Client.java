@@ -6,6 +6,7 @@
 package me.mauro.cloud;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +35,11 @@ public class Client {
         return instance;
     }
 
-    public void upload(File file) throws IOException {
+    public void upload(File file) throws FileNotFoundException {
+        if (!file.exists()) {
+            throw new IllegalArgumentException("O file é invalido");
+        }
+
         new EnviarFicheiro().enviar(file, this.user);
     }
 

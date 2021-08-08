@@ -7,6 +7,8 @@ package me.mauro.cloud;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 /**
  *
@@ -19,11 +21,22 @@ public class CloudClient {
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Client client = Client.getInstance(new User("mauro", "mauro"));
-//        client.upload(new File("C:\\Users\\M4UR0\\Desktop\\compras.txt"));
-//        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\FanBoy ChumChum T01 ProMac.zip"));
-        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
+//        client.upload(new File("C:\\Users\\user\\Desktop\\filme.mp4"));
+//        client.upload(new File("C:\\Users\\M4UR0\\Desktop\\Pastas\\What every body say.pdf"));
+        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\Krav Maga - Caveira.rar"));
+//        client.upload(new File("C:\\Users\\M4UR0\\Downloads\\Rocket Power CyanideSB.zip"));
 //        client.upload(new File("C:\\Users\\user\\Desktop\\Resumo Redes.pdf"));
-        client.getFilesList().forEach(System.out::println);
+
+//        Socket socket = new Socket(Client.IP, Client.PORT);
+//        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+//
+//        for (int i = 0; i < 10; i++) {
+//            oos.writeInt(i);
+////            oos.flush();
+//        }
+//
+//        oos.close();
+//        socket.close();
     }
-    
+
 }

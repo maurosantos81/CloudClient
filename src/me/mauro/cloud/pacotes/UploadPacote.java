@@ -14,15 +14,15 @@ import me.mauro.cloud.User;
 public class UploadPacote extends Pacote {
 
     private final int fragment;
-    private final int fragmentOffset;
+    private final int readBytes;
     private final boolean moreFragments;
     private final byte[] fileBytes;
     private final String name;
 
-    public UploadPacote(int identifier, int fragment, int fragmentOffset, byte[] fileBytes, String name, boolean moreFragments, User user) {
+    public UploadPacote(int identifier, int fragment, int readBytes, byte[] fileBytes, String name, boolean moreFragments, User user) {
         super(identifier, user);
         this.fragment = fragment;
-        this.fragmentOffset = fragmentOffset;
+        this.readBytes = readBytes;
         this.moreFragments = moreFragments;
         this.fileBytes = fileBytes;
         this.name = name;
@@ -40,8 +40,8 @@ public class UploadPacote extends Pacote {
         return name;
     }
 
-    public int getFragmentOffset() {
-        return fragmentOffset;
+    public int getReadBytes() {
+        return readBytes;
     }
 
     public boolean haveMoreFragments() {
